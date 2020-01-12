@@ -1,0 +1,77 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!--没有ActionBar主题-->
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="android:textColor">#000</item>
+        <item name="colorPrimary">#D33A31</item>
+        <item name="colorPrimaryDark">#D33A31</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <!--设置menu中item的图标颜色-->
+        <item name="android:textColorSecondary">#ffffff</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.Android5" parent="AppTheme.NoActionBar">
+        <item name="colorButtonNormal">#fff</item>
+        <item name="colorControlHighlight">#D33A31</item>
+    </style>
+
+    <!--没有ActionBar主题，自定义SearchView样式-->
+    <style name="AppTheme.NoActionBar2" parent="AppTheme">
+        <item name="colorPrimary">#D33A31</item>
+        <item name="colorPrimaryDark">#D33A31</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <!--设置menu中item的图标颜色-->
+        <item name="android:textColorSecondary">#ffffff</item>
+        <!--引入自定义的SearchView样式-->
+        <item name="searchViewStyle">@style/Widget.SearchView</item>
+    </style>
+
+    <style name="Widget.SearchView" parent="Widget.AppCompat.SearchView">
+        <item name="defaultQueryHint">搜索本地歌曲</item>
+        <item name="searchIcon">@mipmap/m5</item>
+        <item name="searchHintIcon">@null</item>
+    </style>
+
+    <!--标题与NavigationIcon的距离-->
+    <style name="Toolbar.MyStyle" parent="Base.Widget.AppCompat.Toolbar">
+        <item name="contentInsetStart">0dp</item>
+        <item name="contentInsetStartWithNavigation">0dp</item>
+    </style>
+
+    <!--Toolbar标题文字大小-->
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!--TabLayout中tab的文字样式-->
+    <style name="TabLayout.TabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <!--CollapsingToolbarLayout展开时标题文字样式-->
+    <style name="ExpandedTitleTextAppearance" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+    <!--CollapsingToolbarLayout折叠时标题文字样式-->
+    <style name="CollapsedTitleTextAppearance" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#000</item>
+    </style>
+
+    <style name="SpnStyle">
+        <item name="android:colorControlNormal">#000000</item>
+    </style>
+
+</resources>

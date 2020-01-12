@@ -1,0 +1,168 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="211dp"
+        android:background="@drawable/bk12"></LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/nutrition_food_ly1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_weight="1">
+
+
+        <TextView
+            android:id="@+id/nutrition_food_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textSize="20dp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/nutrition_food_ly3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@+id/nutrition_food_ly2"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="Calories: " />
+
+
+        <TextView
+            android:id="@+id/nutrition_food_calories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/nutrition_food_ly4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@+id/nutrition_food_ly3"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Protein: " />
+
+
+        <TextView
+            android:id="@+id/nutrition_food_protein"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/nutrition_food_ly5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@+id/nutrition_food_ly4"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sodium: " />
+
+
+        <TextView
+            android:id="@+id/nutrition_food_sodium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/nutrition_food_ly6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@+id/nutrition_food_ly5"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fat: " />
+
+        <TextView
+            android:id="@+id/nutrition_food_fat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@+id/nutrition_food_ly6"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/nutrition_add_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="gram"
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/nutrition_addBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_button1"
+            android:layout_marginLeft="10dp"
+            android:textColor="#FFF"
+            android:textSize="20dp"
+            android:text="Add" />
+
+        <Button
+            android:id="@+id/nutrition_dangerBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_button1"
+            android:layout_marginLeft="10dp"
+            android:textColor="#FFF"
+            android:textSize="20dp"
+            android:text="Danger" />
+
+        <Button
+            android:id="@+id/nutrition_backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nutrition_food_fat"
+            android:background="@drawable/custom_button1"
+            android:layout_marginLeft="10dp"
+            android:textSize="20dp"
+            android:textColor="#FFF"
+            android:text="Back" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

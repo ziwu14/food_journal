@@ -1,0 +1,26 @@
+https://ndb.nal.usda.gov/ndb/doc/apilist/API-SEARCH.md
+
+
+Name	Required	Default	Description
+api_key	y	n/a	Must be a data.gov registered API key
+q	n	""	Search terms
+ds	n	""	Data source. Must be either 'Branded Food Products' or 'Standard Reference'
+fg	n	""	Food group ID
+sort	n	r	Sort the results by food name (n) or by search relevance (r)
+max	n	50	maximum rows to return
+offset	n	0	beginning row in the result set to begin
+format	n	JSON	results format: json or xml
+
+
+USDA
+0HdmUfVCaWe4Bg6vPoaNczZ92tTF3Ao3AiUxbTmW
+
+food2fork
+afefdd59676a154535120d91d48e151d
+
+api_key
+q
+fg
+sort
+max
+(formatl)

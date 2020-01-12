@@ -1,0 +1,125 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
+from django.core import serializers
+
+@python_2_unicode_compatible
+# This is the account model. It contains a user's username, password, and email.
+# The views.py function associated with account handles user authentication.
+class Account(models.Model):
+    username = models.CharField(max_length=200)
+    password = models.CharField(max_length=200, null=True)
+    email = models.CharField(max_length=200, null=True)
+    #...
+
+    class Meta: # Meta data telling the program how to order the usernames in the database.
+        ordering = ['username']
+
+    def __str__(self): # Explains how the model should be represented as a string.
+        return self.username
+    
+@python_2_unicode_compatible
+# This is the health info model that is associated with one account model in a one-to-one relationship
+# It contains relevant information to a user's health profile such as height and weight.
+class HealthInfo(models.Model):
+    account = models.OneToOneField(
+        Account,
+        on_delete=models.CASCADE,
+        primary_key=True)
+    firstName = models.CharField(max_length=10, null=True)
+    lastName = models.CharField(max_length=10, null=True)
+    gender = models.CharField(max_length=10, null=True)
+    age = models.IntegerField(null=True)
+    weight = models.DecimalField(decimal_places = 1, max_digits=100, null=True)
+    height = models.DecimalField(decimal_places = 2, max_digits=100, null=True)
+    bmi = models.DecimalField(decimal_places = 2, max_digits=100, null=True)
+    caloriesPerDay = models.IntegerField(null = True, default = 2000)
+    healthTarget = models.IntegerField(null = True)
+    foodTimeLapse = models.IntegerField(null = True)
+    waterTimeLapse = models.IntegerField(null = True)
+    #...
+
+    def getFields(self): # Helps get fields in a serialized (JSON) manner.
+        return  serializers.serialize('json', self.objects.values())
+
+    def __str__(self): # Explains how the model should be represented as a string.
+        if (self.firstName == None or self.lastName == None):
+            return str(self.account)
+        else:
+            return self.firstName + " " + self.lastName + " (" +str(self.account) + ")"
+
+# This is the food model. It has a many-to-one relationship with an account.
+# The user can input the name of the food, time it was consumed, calories gained from the food.
+# A foodID which corresponds to the USDA database can also be used to look at exact nutrient information.
+@python_2_unicode_compatible
+class Food(models.Model):
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50, default='__')
+    time = models.DateTimeField(null=True)
+    calories_gained = models.IntegerField(null=True, default = 0)
+    foodID = models.CharField(max_length=50, default='Custom')
+    isDanger = models.BooleanField(default=False)
+    # ...
+
+    def __str__(self): # Explains how the model should be represented as a string.
+        return self.name + " (" + str(self.account) + ")"
+
+# This is the water model. It has a many-to-one relationship with an account.
+# It tracks how many ounces (or other unit) of water have been consumed.
+# Other liquids can also be input using the foodID, which corresponds to the USDA database.
+@python_2_unicode_compatible
+class Water(models.Model):
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50, default='Water')
+    time = models.DateTimeField(null=True)
+    calories_gained = models.IntegerField(default = 0)
+    foodID = models.CharField(max_length=50, default='Custom')
+    # ...
+    def __str__(self): # Explains how the model should be represented as a string.
+        return self.name + " (" + str(self.account) + ")"
+
+# The is the exercise model. It has a many-to-one relationship with an account.
+# It can include the name of an exercise, intensity, time, calroies burne, and length (in minutes).
+@python_2_unicode_compatible
+class Exercise(models.Model):
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, default='__')
+    intensity = models.IntegerField(null=True, default = 0)
+    time = models.DateTimeField(null=True)
+    calories_burned = models.IntegerField(null=True, default = 0)
+    length = models.IntegerField(null=True, default = 0)
+    #...
+
+    def __str__(self): # Explains how the model should be represented as a string.
+        return self.name + " (" +str(self.account) + ")"
+
+# This is the danger food model. It has a many-to-one relationship with an account.
+# Once a food is marked as danger food, the user will be notified of this when they attempt to consume the food.
+@python_2_unicode_compatible
+class DangerFood(models.Model):
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50, default='__')
+    foodID = models.CharField(max_length=50, default='Custom')
+    #...
+
+    def getFields(self): # Helps get fields in a serialized (JSON) manner.
+        return  serializers.serialize('json', self.objects.values())
+
+    def __str__(self): # Explains how the model should be represented as a string.
+            return self.name + ' (' + str(self.account) + ')(' + self.foodID + ')'
+
+# This is the health condition model. It has a many-to-one relationship with an account.
+# The user can input the name of their health condition and a corresponding description.
+@python_2_unicode_compatible
+class HealthCondition(models.Model):
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, null=False)
+    description = models.CharField(max_length=2000, default='None')
+    #...
+
+    def getFields(self): # Helps get fields in a serialized (JSON) manner.
+        return  serializers.serialize('json', self.objects.values())
+
+    def __str__(self): # Explains how the model should be represented as a string.
+            return self.name + ' (' + str(self.account) + ')'

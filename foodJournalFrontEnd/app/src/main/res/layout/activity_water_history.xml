@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.WaterHistoryActivity"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/activity_water_history_backBtn"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="-55dp"
+            android:background="@drawable/custom_button1"
+            android:src="@drawable/ic_arrow_back_black_24dp" />
+        <ImageView
+            android:layout_width="219dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/water"
+            tools:layout_editor_absoluteX="74dp"
+            tools:layout_editor_absoluteY="53dp" />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <EditText
+            android:id="@+id/activity_water_history_name"
+            android:layout_marginLeft="55dp"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_weight="1"
+            android:textColorHint="#fbf196ad"
+            android:layout_gravity="center"
+            android:hint="drink" />
+
+        <EditText
+            android:id="@+id/activity_water_history_amount"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="55dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="amount/ounces"
+            android:inputType="number"
+            android:textColorHint="#fbf196ad" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"
+        >
+        <Button
+            android:id="@+id/activity_water_history_addBtn"
+            android:background="@drawable/custom_button1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@android:color/white"
+            android:text="add"
+            android:textSize="26sp"/>
+
+
+    </LinearLayout>
+
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_water_history"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="58dp"
+        android:layout_marginRight="55dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"></android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

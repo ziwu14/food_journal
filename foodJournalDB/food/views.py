@@ -1,0 +1,273 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+from django.shortcuts import render
+from django.http import HttpResponse
+from food.models import Account
+from django.http import JsonResponse
+import json
+import requests
+from django.core import serializers
+from food.models import Account, HealthInfo, Food, Exercise, DangerFood, Water, HealthCondition
+from django.views.decorators.csrf import csrf_exempt
+from datetime import datetime
+from django.contrib import auth
+import pdb
+
+#### FOR EXPLANATION OF API FUNCTIONS BELOW, PLEASE REFER TO README FOR BACKEND
+## The urls.py file directs the request to this file. This file then deals with the request using the functions below.
+
+#%% Account handler.
+@csrf_exempt
+def account(request):
+    #pdb.set_trace()
+    if (request.method == 'POST'):
+        username = request.POST.get('username','')
+        try:
+            user = Account.objects.get(username=username)
+            return HttpResponse('User exists')
+        except:
+            account = Account.objects.create()
+            for key, value in request.POST.items():
+                setattr(account, key, value)
+            account.save()
+            return HttpResponse(
+                serializers.serialize('json',
+                                      Account.objects.filter(username=request.POST['username']).all()))
+
+    elif (request.method == 'DELETE'):
+        d = Account.objects.filter(username = request.GET['username']).delete()
+        if (d[0] > 0):
+            return HttpResponse(request.GET['username'] + ' has been deleted.')
+        else:
+            return HttpResponse('No accounts deleted.')
+
+    else:
+        return HttpResponse('Incorrect request method used. Please use POST or DELETE.')
+
+#%% # Login authentication handler. Uses account model.
+@csrf_exempt
+def login_authentication(request):
+    # pdb.set_trace()
+    if(request.method == "POST"):
+        username = request.POST.get('username','')
+        password = request.POST.get('password','')
+        try:
+            user = Account.objects.get(username=username, password=password)
+            return HttpResponse(
+                serializers.serialize('json',
+                                      HealthInfo.objects.filter(account = user).all()))
+        except:
+            return HttpResponse('User not exists')
+    else:
+        return HttpResponse('Incorrect request method used. Please use POST')
+
+    
+#%% Health Info handler.
+@csrf_exempt
+def healthinfo(request):
+    #pdb.set_trace()
+    accountName = Account.objects.get(username = request.GET.get('username'))
+    # request.GET not only works on GET, it could retrieve info in url parameters
+    
+    if(request.method == "GET"):
+        return HttpResponse(
+            serializers.serialize('json',
+                                  HealthInfo.objects.filter(account = accountName).all()))
+    
+    elif (request.method == 'POST'):
+        try:
+            healthinfo = HealthInfo.objects.get(account=accountName)
+        except HealthInfo.DoesNotExist:
+            healthinfo = False
+        if (not healthinfo):
+            healthinfo = HealthInfo.objects.create(account=accountName)  
+        for key, value in request.POST.items():#request.POST.items() read the request body
+            setattr(healthinfo, key, value)
+        healthinfo.save()
+        return HttpResponse(
+            serializers.serialize('json',
+                                  HealthInfo.objects.filter(account = accountName).all()))
+
+    else:
+        return HttpResponse('Incorrect request method used. Please use GET, PUT, or POST')
+
+#%% Food handler.
+@csrf_exempt
+def food(request):
+    accountName = Account.objects.get(username = request.GET['username'])
+    if(request.method == 'GET'):
+        try:
+            string = request.GET['date']
+            date = string.split(',')
+            return HttpResponse(serializers.serialize('json',
+                                                      Food.objects.filter(account = accountName,
+                                                                          time__year= date[0],
+                                                                          time__month = date[1], 
+                                                                          time__day = date[2]).all()))
+        except:
+            return HttpResponse(
+                serializers.serialize("json",
+                                      accountName.food_set.all()))
+
+    elif (request.method == 'POST'):
+        food = Food.objects.create(account=accountName)
+        for key, value in request.POST.items():
+            setattr(food, key, value)
+        food.time = datetime.now()
+        if DangerFood.objects.filter(account = accountName, name__iexact = request.POST['name']).all().exists():
+            food.isDanger = True
+        food.save()
+        return HttpResponse(
+            serializers.serialize("json",
+                                  accountName.food_set.all()))
+
+    elif (request.method == 'DELETE'):
+        d = Food.objects.filter(account = accountName, name__iexact = request.GET['name'], time = request.GET['time']).delete()
+        if (d[0] > 0):
+            return HttpResponse(
+                serializers.serialize("json",
+                                      accountName.food_set.all()))
+        else:
+            return HttpResponse('No foods deleted.')
+    
+    else:
+        return HttpResponse('Incorrect request method used. Please use GET, POST, or DELETE.')
+
+#%% # Water handler
+@csrf_exempt
+def water(request):
+    accountName = Account.objects.get(username = request.GET['username'])
+    if(request.method == 'GET'):
+        try:
+            string = request.GET['date']
+            date = string.split(',')
+            return HttpResponse(serializers.serialize('json',
+                                                      Water.objects.filter(account = accountName,
+                                                                           time__year= date[0],
+                                                                           time__month = date[1], 
+                                                                           time__day = date[2]).all()))
+        except:
+            return HttpResponse(
+                serializers.serialize("json",
+                                      accountName.water_set.all()))
+
+    elif (request.method == 'POST'):
+        water = Water.objects.create(account=accountName)
+        for key, value in request.POST.items():
+            setattr(water, key, value)
+        water.time = datetime.now()
+        water.save()
+        return HttpResponse(
+            serializers.serialize("json",
+                                  accountName.water_set.all()))
+
+    elif (request.method == 'DELETE'):
+        d = Water.objects.filter(account = accountName, time = request.GET['time']).delete()
+        if (d[0] > 0):
+            return HttpResponse(
+                serializers.serialize("json",
+                                      accountName.water_set.all()))
+        else:
+            return HttpResponse('No water deleted.')
+    
+    else:
+        return HttpResponse('Incorrect request method used. Please use GET, POST, or DELETE.')
+
+
+#%% Exercise Handler
+@csrf_exempt
+def exercise(request):
+    accountName = Account.objects.get(username = request.GET['username'])
+    if (request.method == 'GET'):
+        try:
+            string = request.GET['date']
+            date = string.split(',')
+            return HttpResponse(serializers.serialize('json',
+                                                      Exercise.objects.filter(account = accountName,
+                                                                              time__year= date[0],
+                                                                              time__month = date[1], 
+                                                                              time__day = date[2]).all()))
+        except:
+            return HttpResponse(
+                serializers.serialize("json",
+                                      accountName.exercise_set.all()))
+
+    elif (request.method == 'POST'):
+        exercise = Exercise.objects.create(account=accountName)
+        for key, value in request.POST.items():
+            setattr(exercise, key, value)
+        exercise.time = datetime.now()
+        exercise.save()
+        return HttpResponse(
+            serializers.serialize("json",
+                                  accountName.exercise_set.all()))
+
+    elif (request.method == 'DELETE'):
+        d = Exercise.objects.filter(account = accountName, name = request.GET['name']).delete()
+        if (d[0] > 0):
+            return HttpResponse(
+                serializers.serialize("json",
+                                      accountName.exercise_set.all()))
+        else:
+            return HttpResponse('No exercises deleted.')
+    
+    else:
+        return HttpResponse('Incorrect request method used. Please use GET, POST, or DELETE.')
+
+#%% Danger Food Handler
+@csrf_exempt
+def dangerFood(request):
+    
+    accountName = Account.objects.get(username = request.GET['username'])
+    if(request.method == 'GET'):
+        Name = request.GET.get('name', '')
+        if Name == '':
+            return HttpResponse(
+                serializers.serialize("json",
+                                      accountName.dangerfood_set.all()))
+        else:
+            d = DangerFood.objects.filter(account = accountName, name = request.GET['name']).delete()
+            return HttpResponse('delete method')
+        
+    elif (request.method == 'POST'):
+        dangerFood = DangerFood.objects.create(account=accountName)
+        for key, value in request.POST.items():
+            setattr(dangerFood, key, value)
+        dangerFood.save()
+        return HttpResponse(
+            serializers.serialize("json",
+                                  accountName.dangerfood_set.all()))
+
+ 
+    else:
+        return HttpResponse('Incorrect request method used. Please use GET, POST, or DELETE.')
+
+#%% Health Condition handler.
+@csrf_exempt
+def healthCondition(request):
+    accountName = Account.objects.get(username = request.GET['username'])
+    if(request.method == 'GET'):
+        return HttpResponse(
+            serializers.serialize("json",
+                                  accountName.healthcondition_set.all()))
+
+    elif (request.method == 'POST'):
+        healthCondition = HealthCondition.objects.create(account=accountName)
+        for key, value in request.POST.items():
+            setattr(healthCondition, key, value)
+        healthCondition.save()
+        return HttpResponse(
+            serializers.serialize("json",
+                                  accountName.healthcondition_set.all()))
+
+    elif (request.method == 'DELETE'):
+        d = HealthCondition.objects.filter(account = accountName, name = request.GET['name']).delete()
+        if (d[0] > 0):
+            return HttpResponse(
+                serializers.serialize("json",
+                                      accountName.healthcondition_set.all()))
+        else:
+            return HttpResponse('No health condition deleted.')
+    
+    else:
+        return HttpResponse('Incorrect request method used. Please use GET, POST, or DELETE.')

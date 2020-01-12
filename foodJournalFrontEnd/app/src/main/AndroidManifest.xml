@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.foodJournal">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".activity.GuestActivity">
+        </activity>
+        <activity android:name=".activity.WebViewActivity" />
+        <activity android:name=".activity.FoodRecipeActivity"></activity>
+        <activity android:name=".activity.DangerFoodActivity"></activity>
+        <activity android:name=".activity.NutritionDetailActivity" />
+        <activity android:name=".activity.ExerciseHistoryActivity" />
+        <activity android:name=".activity.WaterHistoryActivity" />
+        <activity android:name=".activity.FoodHistoryActivity"></activity>
+        <activity
+            android:name=".activity.FoodManagementActivity"
+            android:theme="@style/AppTheme.NoActionBar2"></activity>
+        <activity android:name=".activity.MainPageActivity" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCp2nqjrWcYGrRsu8wv6fUMl5ikQkOElDw" />
+
+        <activity android:name=".activity.EditPersonalProfileActivity" />
+        <activity android:name=".activity.PersonalProfileActivity" />
+        <activity android:name=".activity.SignUpActivity" />
+        <activity android:name=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <receiver android:name=".activity.AlarmReceiver">
+
+        </receiver>
+    </application>
+
+</manifest>
